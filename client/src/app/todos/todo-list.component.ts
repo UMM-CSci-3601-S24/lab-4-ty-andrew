@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
-import { TodoCardComponent } from './todo-card.component';
+// import { TodoCardComponent } from './todo-card.component';
 
 import { MatRadioModule } from '@angular/material/radio';
 import { MatOptionModule } from '@angular/material/core';
@@ -25,7 +25,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./todo-list.component.scss'],
   providers: [],
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, TodoCardComponent, MatListModule, RouterLink, MatButtonModule, MatTooltipModule, MatIconModule]
+  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, MatListModule, RouterLink, MatButtonModule, MatTooltipModule, MatIconModule]
 })
 export class TodoListComponent implements OnInit, OnDestroy {
   public serverFilteredTodos: Todo[];
@@ -63,7 +63,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
       next: (returnedTodos) => {
           this.serverFilteredTodos = returnedTodos;
           this.updateFilter();
-          this.updateSorting();
       },
 
       error: (err) => {
@@ -80,10 +79,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.todos = this.todoService.filterTodos(
       this.serverFilteredTodos, {owner: this.todoOwner, status: this.todoStatus, limit: this.todoLimit}
     )
-  }
-
-  public updateSorting() {
-    this.filteredTodos = this.todoService.sortTodos(this.serverFilteredTodos,this.todoSortBy)
   }
 
 
