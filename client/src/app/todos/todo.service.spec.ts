@@ -69,7 +69,7 @@ describe('TodoService', () => {
 
     describe('When getTodos() is called with parameters, it correctly forms the HTTP request', () => {
 
-      it('correctly calls api/todos with filter parameter \'category\'', () => {
+      it('correctly calls api/todos with filter parameter \'video games\'', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testTodos));
 
         todoService.getTodos({ category: 'video games' }).subscribe(() => {
@@ -81,6 +81,7 @@ describe('TodoService', () => {
             .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('category', 'video games') });
           });
       });
+
 
       it('correctly calls api/todos with filter parameter \'software design\'', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testTodos));
@@ -207,6 +208,7 @@ describe('TodoService', () => {
           expect(todo.status === todoStatus);
           })
         });
+
 
 
       it('filters by owner, status, and limit ', () => {

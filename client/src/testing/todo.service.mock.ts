@@ -38,6 +38,7 @@ export class MockTodoService extends TodoService {
     return of(MockTodoService.testTodos);
   }
 
+  // skipcq: JS-0105
   getTodoById(id: string): Observable<Todo> {
     // If the specified ID is for one of the test todos,
     // return that todo, otherwise return `null` so
@@ -46,8 +47,6 @@ export class MockTodoService extends TodoService {
       return of(MockTodoService.testTodos[0]);
     } else if (id === MockTodoService.testTodos[1]._id) {
       return of(MockTodoService.testTodos[1]);
-    } else if (id === MockTodoService.testTodos[2]._id) {
-      return of(MockTodoService.testTodos[2]);
     } else {
       return of(null);
     }

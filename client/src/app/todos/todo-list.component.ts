@@ -71,6 +71,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
         } else {
           this.errMsg = `Problem contacting the server – Error Code: ${err.status}\nMessage: ${err.message}`;
         }
+        this.snackBar.open(
+          this.errMsg,
+          'OK',
+          { duration: 6000 });
       },
     })
   }
