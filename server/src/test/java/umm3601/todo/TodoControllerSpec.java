@@ -111,25 +111,25 @@ class TodoControllerSpec {
     testTodos.add(
       new Document()
           .append("owner", "Fry")
-          .append("body","I play games a little a day")
+          .append("body", "I play games a little a day")
           .append("status", true)
           .append("category", "video games"));
     testTodos.add(
       new Document()
           .append("owner", "Fry")
-          .append("body","I do homework")
+          .append("body", "I do homework")
           .append("status", false)
           .append("category", "homework"));
     testTodos.add(
       new Document()
           .append("owner", "Blanche")
-          .append("body","I do groceries")
+          .append("body", "I do groceries")
           .append("status", true)
           .append("category", "groceries"));
     testTodos.add(
       new Document()
           .append("owner", "Blanche")
-          .append("body","I am software design")
+          .append("body", "I am software design")
           .append("status", false)
           .append("category", "software design"));
 
@@ -137,7 +137,7 @@ class TodoControllerSpec {
     Document blanche = new Document()
         .append("_id", blancheId)
         .append("owner", "Blanche")
-        .append("body","I play games all day")
+        .append("body", "I play games all day")
         .append("status", false)
         .append("category", "video games");
 
@@ -199,5 +199,140 @@ class TodoControllerSpec {
     assertEquals("The requested todo was not found", exception.getMessage());
   }
 
+  @Test
+  void getTodosByOwner() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.OWNER_KEY, Arrays.asList(new String[] {"Blanche"}));
+    queryParams.put(TodoController.SORT_ORDER_KEY, Arrays.asList(new String[] {"desc"}));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.OWNER_KEY)).thenReturn("Blanche");
+    when(ctx.queryParam(TodoController.SORT_ORDER_KEY)).thenReturn("Blanche");
+
+    todoController.getTodos(ctx);
+
+    verify(ctx).json(todoArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+    for (Todo todo : todoArrayListCaptor.getValue()) {
+      assertEquals("Blanche", todo.owner);
+    }
+  }
+
+  @Test
+  void getTodosByOwnerAndCategory() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.OWNER_KEY, Arrays.asList(new String[] {"Blanche"}));
+    queryParams.put(TodoController.CATEGORY_KEY, Arrays.asList(new String[] {"software design"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.OWNER_KEY)).thenReturn("Blanche");
+    when(ctx.queryParam(TodoController.CATEGORY_KEY)).thenReturn("software design");
+
+    todoController.getTodos(ctx);
+
+    verify(ctx).json(todoArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+    assertEquals(1, todoArrayListCaptor.getValue().size());
+    for (Todo todo : todoArrayListCaptor.getValue()) {
+      assertEquals("Blanche", todo.owner);
+      assertEquals("software design", todo.category);
+    }
+  }
+
+  @Test
+  void canGetTodosWithOwnerLowercase() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.OWNER_KEY, Arrays.asList(new String[] {"blanche"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.OWNER_KEY)).thenReturn("blanche");
+
+    todoController.getTodos(ctx);
+
+    verify(ctx).json(todoArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    for (Todo todo : todoArrayListCaptor.getValue()) {
+      assertEquals("Blanche", todo.owner);
+    }
+  }
+
+  @Test
+  void getASingleTodo() throws IOException {
+    String testID = blancheId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+    todoController.getTodo(ctx);
+
+    verify(ctx).json(todoCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+    assertEquals("Blanche", todoCaptor.getValue().owner);
+  }
+
+  @Test
+  void canGetTodosWIthCategoryVideoGames() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.CATEGORY_KEY, Arrays.asList(new String[] {"video games"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.CATEGORY_KEY)).thenReturn("video games");
+
+    todoController.getTodos(ctx);
+
+    verify(ctx).json(todoArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    for (Todo todo : todoArrayListCaptor.getValue()) {
+      assertEquals("video games", todo.category);
+    }
+  }
+
+  @Test
+  void canGetTodosWIthCategoryHomeWork() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.CATEGORY_KEY, Arrays.asList(new String[] {"homework"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.CATEGORY_KEY)).thenReturn("homework");
+
+    todoController.getTodos(ctx);
+
+    verify(ctx).json(todoArrayListCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    for (Todo todo : todoArrayListCaptor.getValue()) {
+      assertEquals("homework", todo.category);
+    }
+  }
+
+
+  // @Test
+  // void addUser() throws IOException {
+  //   String testNewUser = """
+  //       {
+  //         "owner": "Test Todo",
+  //         "status": false,
+  //         "category": "video games",
+  //         "body": "I have to play game"
+  //       }
+  //       """;
+  //   when(ctx.bodyValidator(Todo.class))
+  //       .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+
+  //   userController.addNewUser(ctx);
+  //   verify(ctx).json(mapCaptor.capture());
+
+  //   // Our status should be 201, i.e., our new user was successfully created.
+  //   verify(ctx).status(HttpStatus.CREATED);
+
+  //   // Verify that the user was added to the database with the correct ID
+  //   Document addedUser = db.getCollection("users")
+  //       .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+  //   // Successfully adding the user should return the newly generated, non-empty
+  //   // MongoDB ID for that user.
+  //   assertNotEquals("", addedUser.get("_id"));
+  //   assertEquals("Test User", addedUser.get("name"));
+  //   assertEquals(25, addedUser.get(UserController.AGE_KEY));
+  //   assertEquals("testers", addedUser.get(UserController.COMPANY_KEY));
+  //   assertEquals("test@example.com", addedUser.get("email"));
+  //   assertEquals("viewer", addedUser.get(UserController.ROLE_KEY));
+  //   assertNotNull(addedUser.get("avatar"));
+  // }
 
 }
