@@ -47,7 +47,7 @@ describe('Todo List', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [COMMON_IMPORTS, TodoListComponent],
+      imports: [COMMON_IMPORTS, TodoListComponent, TodoCardComponent],
       providers: [{ provide: TodoService, useValue: new MockTodoService() }]
     });
   });

@@ -25,7 +25,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./todo-list.component.scss'],
   providers: [],
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, UserCardComponent, MatListModule, RouterLink, MatButtonModule, MatTooltipModule, MatIconModule]
+  imports: [MatCardModule, MatFormFieldModule, MatInputModule, FormsModule, MatSelectModule, MatOptionModule, MatRadioModule, TodoCardComponent, MatListModule, RouterLink, MatButtonModule, MatTooltipModule, MatIconModule]
 })
 export class TodoListComponent implements OnInit, OnDestroy {
   public serverFilteredTodos: Todo[];
