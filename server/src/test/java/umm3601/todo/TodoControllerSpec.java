@@ -3,16 +3,16 @@ package umm3601.todo;
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+// import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+// import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+// import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+// import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,14 +27,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatcher;
+// import org.mockito.ArgumentMatcher;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
@@ -50,8 +50,8 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.json.JavalinJackson;
 import io.javalin.validation.BodyValidator;
 import io.javalin.validation.ValidationException;
-import io.javalin.validation.Validator;
-import umm3601.user.UserController;
+// import io.javalin.validation.Validator;
+// import umm3601.todo.TodoController;
 
 
 /**
@@ -301,38 +301,148 @@ class TodoControllerSpec {
   }
 
 
-  // @Test
-  // void addUser() throws IOException {
-  //   String testNewUser = """
-  //       {
-  //         "owner": "Test Todo",
-  //         "status": false,
-  //         "category": "video games",
-  //         "body": "I have to play game"
-  //       }
-  //       """;
-  //   when(ctx.bodyValidator(Todo.class))
-  //       .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+  @Test
+  void addTodo() throws IOException {
+    String testNewTodo = """
+        {
+          "owner": "Test Todo",
+          "status": false,
+          "category": "video games",
+          "body": "I have to play game"
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
 
-  //   userController.addNewUser(ctx);
-  //   verify(ctx).json(mapCaptor.capture());
+    todoController.addNewTodo(ctx);
+    verify(ctx).json(mapCaptor.capture());
+    verify(ctx).status(HttpStatus.CREATED);
+    Document addedTodo = db.getCollection("todos")
+        .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
 
-  //   // Our status should be 201, i.e., our new user was successfully created.
-  //   verify(ctx).status(HttpStatus.CREATED);
+    assertNotEquals("", addedTodo.get("_id"));
+    assertEquals("Test Todo", addedTodo.get("owner"));
+    assertEquals("video games", addedTodo.get(TodoController.CATEGORY_KEY));
+    assertEquals("I have to play game", addedTodo.get(TodoController.BODY_KEY));
+    assertEquals(false, addedTodo.get("status"));
+  }
 
-  //   // Verify that the user was added to the database with the correct ID
-  //   Document addedUser = db.getCollection("users")
-  //       .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+  @Test
+  void addNullOwnerTodo() throws IOException {
+    String testNewTodo = """
+        {
+          "status": false,
+          "category": "video games",
+          "body": "I have to play game"
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
 
-  //   // Successfully adding the user should return the newly generated, non-empty
-  //   // MongoDB ID for that user.
-  //   assertNotEquals("", addedUser.get("_id"));
-  //   assertEquals("Test User", addedUser.get("name"));
-  //   assertEquals(25, addedUser.get(UserController.AGE_KEY));
-  //   assertEquals("testers", addedUser.get(UserController.COMPANY_KEY));
-  //   assertEquals("test@example.com", addedUser.get("email"));
-  //   assertEquals("viewer", addedUser.get(UserController.ROLE_KEY));
-  //   assertNotNull(addedUser.get("avatar"));
-  // }
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
 
+  @Test
+  void addInvalidOwnerTOdo() throws IOException {
+    String testNewTodo = """
+        {
+          "owner": "",
+          "status": false,
+          "category": "video games",
+          "body": "I have to play game"
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  void addInvalidStatus() throws IOException {
+    String testNewTodo = """
+        {
+          "owner": "Test Todo",
+          "status": "incomplete",
+          "category": "video games",
+          "body": "I have to play game"
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  void addInvalidCategory() throws IOException {
+    String testNewTodo = """
+        {
+          "owner": "Test Todo",
+          "status": false,
+          "category": "something else",
+          "body": "I have to play game"
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  void addInvalidBody() throws IOException {
+    String testNewTodo = """
+        {
+          "owner": "Test Todo",
+          "status": false,
+          "category": "video games",
+          "body": ""
+        }
+        """;
+    when(ctx.bodyValidator(Todo.class))
+        .then(value -> new BodyValidator<Todo>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  void deleteFoundTodo() throws IOException {
+    String testID = blancheId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+    assertEquals(1, db.getCollection("todos").countDocuments(eq("_id", new ObjectId(testID))));
+
+    todoController.deleteTodo(ctx);
+
+    verify(ctx).status(HttpStatus.OK);
+
+    assertEquals(0, db.getCollection("todos").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+
+  @Test
+  void tryToDeleteNotFoundTodo() throws IOException {
+    String testID = blancheId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(testID);
+
+    todoController.deleteTodo(ctx);
+    assertEquals(0, db.getCollection("todos").countDocuments(eq("_id", new ObjectId(testID))));
+
+    assertThrows(NotFoundResponse.class, () -> {
+      todoController.deleteTodo(ctx);
+    });
+
+    verify(ctx).status(HttpStatus.NOT_FOUND);
+
+    assertEquals(0, db.getCollection("todos").countDocuments(eq("_id", new ObjectId(testID))));
+  }
 }
