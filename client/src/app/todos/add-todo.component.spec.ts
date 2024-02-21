@@ -188,7 +188,7 @@ describe('AddTodoComponent', () => {
 
     it('should not accept "Random"', () => {
       statusControl.setValue('Random');
-      expect(statusControl.valid).toBeTruthy();
+      expect(statusControl.valid).toBeFalsy();
     });
   });
 
@@ -285,4 +285,4 @@ describe('AddTodoComponent#submitForm()', () => {
   });
 });
 
-// Trying to fix ng test fail for getErrorMessage() and status field.
+
