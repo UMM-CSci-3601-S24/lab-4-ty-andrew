@@ -19,11 +19,6 @@ import { MatCardModule } from '@angular/material/card';
 export class TodoProfileComponent implements OnInit, OnDestroy {
   todo: Todo;
   error: { help: string, httpResponse: string, message: string };
-
-  // This `Subject` will only ever emit one (empty) value when
-  // `ngOnDestroy()` is called, i.e., when this component is
-  // destroyed. That can be used ot tell any subscriptions to
-  // terminate, allowing the system to free up their resources (like memory).
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private todoService: TodoService) { }
