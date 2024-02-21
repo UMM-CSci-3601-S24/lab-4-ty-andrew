@@ -1,10 +1,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 <div class="flex-row">
-  <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+  <div class="flex-1">
 
-    <mat-card appearance="outlined" class="search-card">
-      <mat-card-title class="todo-list-title">Todos</mat-card-title>
-      <mat-card-content class="flex-col" >
+    <mat-card class="search-card">
+      <mat-card-header>
+        <mat-card-title class="user-list-title">Users</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
 
         <div class="flex-row gap-10 flex-wrap">
           <!-- filter using Angular -->
@@ -67,6 +69,17 @@
             <mat-hint>Filtered on server</mat-hint>
           </mat-form-field>
         </div>
+
+          <br>
+          <div class ="flex-row gap-10 flex-wrap">
+            <label for ="viewType">View Type: </label>
+            <mat-ratio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
+              <mat-radio-button value="card">Card</mat-radio-button>
+              <mat-radio-button value="list">List</mat-radio-button>
+            </mat-ratio-group>
+          </div>
+
+
         </mat-card-content>
       </mat-card>
     </div>
@@ -76,7 +89,19 @@
     @if (serverFilteredTodos) {
       <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" >
         <div>
-            <mat-nav-list class="todo-nav-list">
+          @switch (viewType) {
+          <!-- Card grid case-->
+          @case ('card') {
+          <div class="todo-cards-container flex-row gap-10 flex-wrap">
+            @for (todo of todos; track todo._id) {
+            <app-todo-card [simple]="true" class="todo-card" [todo]="todo"></app-todo-card>
+            }
+          </div>
+          }
+          @case ('list') {
+            <mat-card appearance="outlined">
+              <mat-card-content>
+                <mat-nav-list class="todo-nav-list">
                 @for (todo of this.todos; track todo._id) {
                   <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
                       <span matListItemTitle mat-line class="todo-list-name" style="color: yellowgreen;"> <i class="fa-solid fa-person"></i> Owner: {{todo.owner}} </span>
@@ -86,12 +111,16 @@
                     </a>
                   }
                 </mat-nav-list>
+              </mat-card-content>
+            </mat-card>
+          }
+          }
         </div>
       </div>
     } @else {
-      <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="user-error">
+      <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="todo-error">
         <mat-error>
-          There was a problem loading the users. Possibly the server is down or perhaps there are network
+          There was a problem loading the todos. Possibly the server is down or perhaps there are network
           issues.
         </mat-error>
         <mat-error>
