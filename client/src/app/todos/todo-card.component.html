@@ -1,1 +1,27 @@
-<p>todo-card works!</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+@if (this.todo) {
+  <mat-card class="todo-card">
+      @if (this.todo.status === true) {
+        <mat-card-header class="header-true">
+      <mat-icon class = "card-status"><i class="fa-solid fa-check"></i></mat-icon>
+      <mat-card-title class="todo-card-owner">{{ this.todo.owner }}</mat-card-title>
+      <mat-card-subtitle class="todo-card-status">Complete</mat-card-subtitle>
+    </mat-card-header>
+  } @else {
+    <mat-card-header class="header-true">
+      <mat-icon class = "card-status"><i class="fa-regular fa-circle-xmark"></i></mat-icon>
+      <mat-card-title class="todo-card-owner">{{ this.todo.owner }}</mat-card-title>
+      <mat-card-subtitle class="todo-card-status">Incomplete</mat-card-subtitle>
+    </mat-card-header>
+  }
+    @if (!this.simple) {
+      <mat-card-content>
+      </mat-card-content>
+    }
+    @if (this.simple) {
+      <mat-card-actions>
+        <button mat-button data-test="viewProfileButton" [routerLink]="['/todos', this.todo._id]">View Todo Description</button>
+      </mat-card-actions>
+    }
+</mat-card>
+}
