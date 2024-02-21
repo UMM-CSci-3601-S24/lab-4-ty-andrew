@@ -18,7 +18,7 @@ import { MatCardModule } from '@angular/material/card';
     standalone: true,
     imports: [FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule]
 })
-export class AddUserComponent {
+export class AddTodoComponent {
 
   addTodoForm = new FormGroup({
     owner: new FormControl('', Validators.compose([
