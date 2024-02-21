@@ -162,4 +162,42 @@ class TodoControllerSpec {
     verify(ctx).status(HttpStatus.OK);
     assertEquals(db.getCollection("todos").countDocuments(), todoArrayListCaptor.getValue().size());
   }
+
+  @Test
+  void getTodoWithExistentId() throws IOException {
+    String id = blancheId.toHexString();
+    when(ctx.pathParam("id")).thenReturn(id);
+
+    todoController.getTodo(ctx);
+
+    verify(ctx).json(todoCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+    assertEquals("Blanche", todoCaptor.getValue().owner);
+    assertEquals(blancheId.toHexString(), todoCaptor.getValue()._id);
+  }
+
+  @Test
+  void getTodoWithBadId() throws IOException {
+    when(ctx.pathParam("id")).thenReturn("bad");
+
+    Throwable exception = assertThrows(BadRequestResponse.class, () -> {
+      todoController.getTodo(ctx);
+    });
+
+    assertEquals("The requested todo id wasn't a legal Mongo Object ID.", exception.getMessage());
+  }
+
+  @Test
+  void getTodoWithNonexistentId() throws IOException {
+    String id = "588935f5c668650dc77df581";
+    when(ctx.pathParam("id")).thenReturn(id);
+
+    Throwable exception = assertThrows(NotFoundResponse.class, () -> {
+      todoController.getTodo(ctx);
+    });
+
+    assertEquals("The requested todo was not found", exception.getMessage());
+  }
+
+
 }
