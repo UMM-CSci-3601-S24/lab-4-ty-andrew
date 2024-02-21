@@ -284,3 +284,5 @@ describe('AddTodoComponent#submitForm()', () => {
     expect(location.path()).toBe(path);
   });
 });
+
+// Trying to fix ng test fail for getErrorMessage() and status field.
