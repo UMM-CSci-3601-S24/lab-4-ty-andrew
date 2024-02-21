@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class TodoService {
 
-  readonly todoUrl: string = environment.apiUrl + 'todos';
+  readonly todoUrl: string = `${environment.apiUrl}todos`;
 
   constructor(private httpClient: HttpClient) {
   }
