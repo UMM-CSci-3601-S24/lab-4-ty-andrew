@@ -22,7 +22,7 @@ export class TodoService {
    *
    */
 
-  getTodos(filters?: { body?: string; category?: string }): Observable<Todo[]> {
+  getTodos(filters?: { body?: string; category?: string; sortBy?: string;}): Observable<Todo[]> {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
       if (filters.body) {
@@ -30,6 +30,9 @@ export class TodoService {
       }
       if (filters.category) {
         httpParams = httpParams.set('category', filters.category);
+      }
+      if (filters.sortBy) {
+        httpParams = httpParams.set('sortby', filters.sortBy);
       }
     }
 

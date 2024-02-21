@@ -82,6 +82,22 @@ describe('TodoService', () => {
           });
       });
 
+      it('correctly calls api/todos with filter parameter \'status\'', () => {
+        todoService.getTodos({ sortBy: 'status' }).subscribe(
+          todos => expect(todos).toBe(testTodos)
+        )
+
+        const req = httpTestingController.expectOne(
+          (request) => request.url.startsWith(todoService.todoUrl) && request.params.has('sortby')
+        );
+
+        expect(req.request.method).toEqual('GET');
+        expect(req.request.params.get('sortby')).toEqual('status');
+
+        req.flush(testTodos);
+      });
+
+
 
       it('correctly calls api/todos with filter parameter \'software design\'', () => {
         const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testTodos));

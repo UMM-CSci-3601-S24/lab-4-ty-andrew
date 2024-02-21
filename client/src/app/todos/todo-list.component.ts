@@ -36,6 +36,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public todoBody: string;
   public todoCategory: string;
   public todoLimit: number;
+  public todoSortBy: string;
 
 
 
