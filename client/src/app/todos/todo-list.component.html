@@ -77,7 +77,6 @@
       <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" >
         <div>
             <mat-nav-list class="todo-nav-list">
-              <h3 mat-subheader style="font-size: 24px; margin-bottom: 20px; text-align: center; color: red;">Todos</h3>
                 @for (todo of this.todos; track todo._id) {
                   <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
                       <span matListItemTitle mat-line class="todo-list-name" style="color: yellowgreen;"> <i class="fa-solid fa-person"></i> Owner: {{todo.owner}} </span>
