@@ -204,7 +204,7 @@ describe('AddTodoComponent', () => {
       expect(addTodoComponent.getErrorMessage(controlName)).toEqual('Body is required');
 
       controlName = 'category';
-      addTodoComponent.addTodoForm.get(controlName).setErrors({'category': true});
+      addTodoComponent.addTodoForm.get(controlName).setErrors({'required': true});
       expect(addTodoComponent.getErrorMessage(controlName)).toEqual('Category is required');
     });
 
