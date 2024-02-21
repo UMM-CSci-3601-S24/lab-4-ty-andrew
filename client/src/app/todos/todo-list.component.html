@@ -35,14 +35,14 @@
 
           <mat-form-field class="input-field">
             <mat-label>Sort By</mat-label>
-            <mat-select (selectionChange)="updateSorting()" [(ngModel)]="todoSortBy" data-test="todoSortSelect">
+            <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoSortBy"
+              data-test="todoSortBySelect">
               <mat-option>--</mat-option>
-              <mat-option value='owner'>Owner</mat-option>
-              <mat-option value='body'>Body</mat-option>
-              <mat-option value='status'>Status</mat-option>
-              <mat-option value='category'>Category</mat-option>
+              <mat-option value="category">Category</mat-option>
+              <mat-option value="owner">Owner</mat-option>
+              <mat-option value="status">Status</mat-option>
+              <mat-option value="body">Body Text</mat-option>
             </mat-select>
-            <mat-hint>Sorted on client</mat-hint>
           </mat-form-field>
         </div>
 
