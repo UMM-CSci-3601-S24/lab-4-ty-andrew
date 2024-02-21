@@ -3,9 +3,9 @@ import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
-// import java.nio.charset.StandardCharsets;
-// import java.security.MessageDigest;
-// import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class TodoController implements Controller {
   public TodoController(MongoDatabase database) {
     todoCollection = JacksonMongoCollection.builder().build(
         database,
-        "users",
+        "todos",
         Todo.class,
         UuidRepresentation.STANDARD);
   }
