@@ -91,7 +91,7 @@ describe('TodoService', () => {
             .toHaveBeenCalledTimes(1);
           expect(mockedMethod)
             .withContext('talks to the correct endpoint')
-            .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('body', 'Ullamco irure laborum magna dolor non. Anim occaecat adipisicing cillum eu magna in.') });
+            .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('contains', 'Ullamco irure laborum magna dolor non. Anim occaecat adipisicing cillum eu magna in.') });
           });
         });
     })

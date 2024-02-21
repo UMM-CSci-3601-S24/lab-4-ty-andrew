@@ -23,7 +23,7 @@ export class MockTodoService extends TodoService {
     {
       _id: "58895985186754887e0381f5",
       owner: "Blanche",
-      status: true,
+      status: false,
       body: "Incididunt enim ea sit qui esse magna eu. Nisi sunt exercitation est Lorem consectetur incididunt cupidatat laboris commodo veniam do ut sint.",
       category: "software design"
     }
