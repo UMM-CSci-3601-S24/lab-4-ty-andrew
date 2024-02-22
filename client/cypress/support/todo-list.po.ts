@@ -26,6 +26,15 @@ export class TodoListPage {
   }
 
   /**
+   * Gets the title of the app when visiting the `/users` page.
+   *
+   * @returns the value of the element with the ID `.user-list-title`
+   */
+  getTodoTitle() {
+    return cy.get(this.pageTitle);
+  }
+
+  /**
    * Get all the `app-todo-card` DOM elements. This will be
    * empty if we're using the list view of the users.
    *
