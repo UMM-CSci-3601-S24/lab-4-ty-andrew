@@ -38,7 +38,7 @@ export class TodoService {
 
     return this.httpClient.get<Todo[]>(this.todoUrl, {
       params: httpParams,
-    });
+    })
   }
 
   /**

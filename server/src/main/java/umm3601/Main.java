@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 
 import umm3601.user.UserController;
 import umm3601.todo.TodoController;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -62,6 +63,7 @@ public class Main {
       // You can also remove this UserController once you don't need it.
       new UserController(database),
       new TodoController(database),
+
     };
     return controllers;
   }
