@@ -10,21 +10,19 @@
           <!-- filter using Angular -->
 
           <mat-form-field class="input-field">
-            <mat-label>Owner</mat-label>
+            <mat-label>Owner <i class="fa-solid fa-person"></i></mat-label>
             <input matInput data-test="todoOwnerInput" placeholder="Filter by owner"
               [(ngModel)]="todoOwner" (input) ="updateFilter()">
-            <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
-            <mat-label>Contains</mat-label>
+            <mat-label>Contains <i class="fa-solid fa-pen-fancy"></i></mat-label>
             <input matInput data-test="todoBodyInput" placeholder="Filter by contains"
               [(ngModel)]="todoBody" (input)="updateFilter()">
-            <mat-hint>Filtered on server</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
-            <mat-label>Limit Display</mat-label>
+            <mat-label>Limit Display <i class="fa-solid fa-bomb"></i></mat-label>
             <input matInput data-test="todoLimitInput" type="number" placeholder="Limit todos being display"
               min="1" [(ngModel)]="todoLimit" (input)="updateFilter()">
           </mat-form-field>
@@ -33,7 +31,7 @@
 
         <div class="flex-row gap-10 flex-wrap">
           <mat-form-field class="input-field">
-            <mat-label>Category</mat-label>
+            <mat-label>Category <i class="fa-solid fa-tag"></i></mat-label>
             <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoCategory" data-test="todoCategorySelect">
               <mat-option>--</mat-option>
               <mat-option value="software design"> <i class="fa-solid fa-laptop"></i> Software Design</mat-option>
@@ -41,11 +39,10 @@
               <mat-option value="homework"> <i class="fa-solid fa-book"></i> Homework</mat-option>
               <mat-option value="groceries"> <i class="fa-solid fa-bag-shopping"></i> Groceries</mat-option>
             </mat-select>
-            <mat-hint>Filtered on server</mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-field">
-            <mat-label>Status</mat-label>
+            <mat-label>Status <i class="fa-regular fa-circle"></i></mat-label>
             <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
               <mat-option>--</mat-option>
               <mat-option [value]="true"> <i class="fa-solid fa-check"></i> Complete</mat-option>
@@ -58,10 +55,10 @@
             <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoSortBy"
               data-test="todoSortBySelect">
               <mat-option>--</mat-option>
-              <mat-option value="category">Category</mat-option>
-              <mat-option value="owner">Owner</mat-option>
-              <mat-option value="status">Status</mat-option>
-              <mat-option value="body">Body Text</mat-option>
+              <mat-option value="category"><i class="fa-solid fa-tag"></i> Category</mat-option>
+              <mat-option value="owner"><i class="fa-solid fa-person"></i> Owner</mat-option>
+              <mat-option value="status"><i class="fa-regular fa-circle"></i> Status</mat-option>
+              <mat-option value="body"><i class="fa-solid fa-pen-fancy"></i> Body Text</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -69,10 +66,10 @@
 
           <br>
           <div class="flex-row gap-8 flex-wrap">
-            <label for="viewType">View type: </label>
+            <label for="viewType"><i class="fa-solid fa-magnifying-glass"></i> View type: </label>
             <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
-              <mat-radio-button value="card">Card</mat-radio-button>
-              <mat-radio-button value="list">List</mat-radio-button>
+              <mat-radio-button value="card">Card <i class="fa-solid fa-address-card"></i></mat-radio-button>
+              <mat-radio-button value="list">List <i class="fa-solid fa-list"></i></mat-radio-button>
             </mat-radio-group>
           </div>
 
@@ -100,11 +97,14 @@
               <mat-card-content>
                 <mat-nav-list class="todo-nav-list">
                 @for (todo of this.todos; track todo._id) {
-                  <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
-                      <span matListItemTitle mat-line class="todo-list-owner" style="color: yellowgreen;"> <i class="fa-solid fa-person"></i> Owner: {{todo.owner}} </span>
-                      <span matListItemLine class="todo-list-status"> <i class="fa-regular fa-circle"></i> Status : {{todo.status? 'Complete' : 'Incomplete'}} </span>
-                      <span matListItemLine class="todo-list-body"> <i class="fa-solid fa-file"></i> Body: {{todo.body}} </span>
-                      <span matListItemLine class="todo-list-category">  <i class="fa-solid fa-tag"></i> Category: {{todo.category}} </span>
+                  <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item" [attr.status]="todo.status.toString()">
+                      <span matListItemTitle mat-line class="todo-list-owner" style="color: black;"> <i class="fa-solid fa-person"></i>{{todo.owner}} </span>
+                      <span matListItemLine class="todo-list-status" style="color: black;">
+                        <i class="fa-{{ todo.status ? 'solid fa-check' : 'regular fa-circle-xmark' }}"></i>
+                        {{ todo.status ? 'Complete' : 'Incomplete'}}
+                      </span>
+                      <span matListItemLine class="todo-list-body" style="color: black;"> <i class="fa-solid fa-pen-fancy"></i>{{todo.body}} </span>
+                      <span matListItemLine class="todo-list-category" style="color: black;"> <i class="fa-solid fa-tag"></i>{{todo.category}} </span>
                     </a>
                   }
                 </mat-nav-list>
