@@ -58,9 +58,20 @@ describe('Todo List', () => {
     });
   });
 
-  it('Should type something in the Category filter and check that it returned correct elements', () => {
+  it('Should select Status filter and check that it returned correct elements', () => {
     page.changeView('card');
-    cy.get('[data-test=todoCategorySelect]').type('software design');
+    const statusFilter = 'Complete';
+    cy.get('[data-test=todoStatusSelect]').click();
+    cy.get('mat-option').contains(statusFilter).click()
+
+    page.getTodoCards().should('have.lengthOf.above', 0);
+  });
+
+  it('Should select Category filter and check that it returned correct elements', () => {
+    page.changeView('card');
+
+      cy.get('[data-test=todoCategorySelect]').click()
+      .get(`mat-option[value="homework"]`).click();
 
     page.getTodoCards().should('have.lengthOf.above', 0);
   });
@@ -88,17 +99,17 @@ describe('Todo List', () => {
 
   it('Should type an owner, select status, category and check that it returned the correct elements', () => {
     page.changeView('list');
-
+    const statusFilter = 'Complete';
     cy.get('[data-test=todoOwnerInput]').type('Blanche');
 
-    // cy.get('[data-test=todoStatusSelect]').click()
-    //   .get(`mat-option[value]="true"`).click();
+    cy.get('[data-test=todoStatusSelect]').click();
+    cy.get('mat-option').contains(statusFilter).click()
 
       cy.get('[data-test=todoCategorySelect]').click()
       .get(`mat-option[value="homework"]`).click();
 
     page.getTodoListItems().each($todo => {
-      // cy.wrap($todo).find('.todo-list-status').should('contain', 'Complete');
+      cy.wrap($todo).find('.todo-list-status').should('contain', 'Complete');
       cy.wrap($todo).find('.todo-list-category').should('contain', 'homework');
       cy.wrap($todo).find('.todo-list-owner').should('contain', 'Blanche');
     });
