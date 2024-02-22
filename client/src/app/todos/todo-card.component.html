@@ -19,24 +19,24 @@
         <mat-list>
           <mat-list-item>
             @if (this.todo.category === 'groceries') {
-                <mat-icon matListItemIcon>local_grocery_store</mat-icon>
+                <mat-icon matListItemIcon><i class="fa-solid fa-bag-shopping"></i></mat-icon>
               }
               @else if (this.todo.category === 'homework') {
-                <mat-icon matListItemIcon>library_books</mat-icon>
+                <mat-icon matListItemIcon><i class="fa-solid fa-book"></i></mat-icon>
               }
               @else if (this.todo.category === 'software design') {
-                <mat-icon matListItemIcon>desktop_mac</mat-icon>
+                <mat-icon matListItemIcon><i class="fa-solid fa-laptop"></i> </mat-icon>
               }
               @else {
-                <mat-icon matListItemIcon>videogame_asset</mat-icon>
+                <mat-icon matListItemIcon><i class="fa-solid fa-gamepad"></i></mat-icon>
               }
-            <p matListItemTitle>Category</p>
+            <p matListItemTitle>Category <i class="fa-solid fa-tag"></i></p>
             <p matListItemLine class="todo-card-role">{{ this.todo.category }}</p>
           </mat-list-item>
           <mat-divider [inset]=true></mat-divider>
           <mat-list-item>
-            <mat-icon matListItemIcon>description</mat-icon>
-            <p matListItemTitle>Description</p>
+            <mat-icon matListItemIcon><i class="fa-solid fa-file-lines"></i></mat-icon>
+            <p matListItemTitle>Description <i class="fa-solid fa-pen-fancy"></i></p>
             <p matListItemLine class="todo-card-role">{{ this.todo.body }}</p>
           </mat-list-item>
         </mat-list>
