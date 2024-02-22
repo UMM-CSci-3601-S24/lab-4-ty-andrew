@@ -2,11 +2,9 @@
 <div class="flex-row">
   <div class="flex-1">
 
-    <mat-card class="search-card">
-      <mat-card-header>
-        <mat-card-title class="user-list-title">Users</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
+    <mat-card appearance="outlined" class="search-card">
+        <mat-card-title class="todo-list-title">Todos</mat-card-title>
+        <mat-card-content>
 
         <div class="flex-row gap-10 flex-wrap">
           <!-- filter using Angular -->
@@ -19,36 +17,20 @@
           </mat-form-field>
 
           <mat-form-field class="input-field">
+            <mat-label>Contains</mat-label>
+            <input matInput data-test="todoBodyInput" placeholder="Filter by contains"
+              [(ngModel)]="todoBody" (input)="getTodosFromServer()">
+            <mat-hint>Filtered on server</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="input-field">
             <mat-label>Limit Display</mat-label>
             <input matInput data-test="todoLimitInput" type="number" placeholder="Limit todos being display"
               min="1" [(ngModel)]="todoLimit" (input)="updateFilter()">
-            <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
-          <mat-form-field class="input-field">
-            <mat-label>Status</mat-label>
-            <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
-              <mat-option>--</mat-option>
-              <mat-option [value]="true"> <i class="fa-solid fa-check"></i> Complete</mat-option>
-              <mat-option [value]="false"> <i class="fa-regular fa-circle-xmark"></i> Incomplete</mat-option>
-            </mat-select>
-            <mat-hint>Filtered on client</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field class="input-field">
-            <mat-label>Sort By</mat-label>
-            <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoSortBy"
-              data-test="todoSortBySelect">
-              <mat-option>--</mat-option>
-              <mat-option value="category">Category</mat-option>
-              <mat-option value="owner">Owner</mat-option>
-              <mat-option value="status">Status</mat-option>
-              <mat-option value="body">Body Text</mat-option>
-            </mat-select>
-          </mat-form-field>
         </div>
 
-        <!-- filter using the server -->
         <div class="flex-row gap-10 flex-wrap">
           <mat-form-field class="input-field">
             <mat-label>Category</mat-label>
@@ -63,20 +45,35 @@
           </mat-form-field>
 
           <mat-form-field class="input-field">
-            <mat-label>Contains</mat-label>
-            <input matInput data-test="todoBodyInput" placeholder="Filter by contains"
-              [(ngModel)]="todoBody" (input)="getTodosFromServer()">
-            <mat-hint>Filtered on server</mat-hint>
+            <mat-label>Status</mat-label>
+            <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
+              <mat-option>--</mat-option>
+              <mat-option [value]="true"> <i class="fa-solid fa-check"></i> Complete</mat-option>
+              <mat-option [value]="false"> <i class="fa-regular fa-circle-xmark"></i> Incomplete</mat-option>
+            </mat-select>
           </mat-form-field>
+
+          <mat-form-field class="input-field">
+            <mat-label>Sort By</mat-label>
+            <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoSortBy"
+              data-test="todoSortBySelect">
+              <mat-option>--</mat-option>
+              <mat-option value="category">Category</mat-option>
+              <mat-option value="owner">Owner</mat-option>
+              <mat-option value="status">Status</mat-option>
+              <mat-option value="body">Body Text</mat-option>
+            </mat-select>
+          </mat-form-field>
+
         </div>
 
           <br>
-          <div class ="flex-row gap-10 flex-wrap">
-            <label for ="viewType">View Type: </label>
-            <mat-ratio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
+          <div class="flex-row gap-8 flex-wrap">
+            <label for="viewType">View type: </label>
+            <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
               <mat-radio-button value="card">Card</mat-radio-button>
               <mat-radio-button value="list">List</mat-radio-button>
-            </mat-ratio-group>
+            </mat-radio-group>
           </div>
 
 
@@ -104,7 +101,7 @@
                 <mat-nav-list class="todo-nav-list">
                 @for (todo of this.todos; track todo._id) {
                   <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
-                      <span matListItemTitle mat-line class="todo-list-name" style="color: yellowgreen;"> <i class="fa-solid fa-person"></i> Owner: {{todo.owner}} </span>
+                      <span matListItemTitle mat-line class="todo-list-owner" style="color: yellowgreen;"> <i class="fa-solid fa-person"></i> Owner: {{todo.owner}} </span>
                       <span matListItemLine class="todo-list-status"> <i class="fa-regular fa-circle"></i> Status : {{todo.status? 'Complete' : 'Incomplete'}} </span>
                       <span matListItemLine class="todo-list-body"> <i class="fa-solid fa-file"></i> Body: {{todo.body}} </span>
                       <span matListItemLine class="todo-list-category">  <i class="fa-solid fa-tag"></i> Category: {{todo.category}} </span>

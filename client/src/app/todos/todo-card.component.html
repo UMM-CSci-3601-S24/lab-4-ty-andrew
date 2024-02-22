@@ -7,7 +7,7 @@
       <mat-card-title class="todo-card-owner">{{ this.todo.owner }}</mat-card-title>
       <mat-card-subtitle class="todo-card-status">Complete</mat-card-subtitle>
     </mat-card-header>
-  } @else {
+    } @else {
     <mat-card-header class="header-true">
       <mat-icon class = "card-status"><i class="fa-regular fa-circle-xmark"></i></mat-icon>
       <mat-card-title class="todo-card-owner">{{ this.todo.owner }}</mat-card-title>
@@ -16,6 +16,30 @@
   }
     @if (!this.simple) {
       <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            @if (this.todo.category === 'groceries') {
+                <mat-icon matListItemIcon>local_grocery_store</mat-icon>
+              }
+              @else if (this.todo.category === 'homework') {
+                <mat-icon matListItemIcon>library_books</mat-icon>
+              }
+              @else if (this.todo.category === 'software design') {
+                <mat-icon matListItemIcon>desktop_mac</mat-icon>
+              }
+              @else {
+                <mat-icon matListItemIcon>videogame_asset</mat-icon>
+              }
+            <p matListItemTitle>Category</p>
+            <p matListItemLine class="todo-card-role">{{ this.todo.category }}</p>
+          </mat-list-item>
+          <mat-divider [inset]=true></mat-divider>
+          <mat-list-item>
+            <mat-icon matListItemIcon>description</mat-icon>
+            <p matListItemTitle>Description</p>
+            <p matListItemLine class="todo-card-role">{{ this.todo.body }}</p>
+          </mat-list-item>
+        </mat-list>
       </mat-card-content>
     }
     @if (this.simple) {
