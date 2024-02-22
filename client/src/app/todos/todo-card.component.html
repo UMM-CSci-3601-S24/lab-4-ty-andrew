@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 @if (this.todo) {
-  <mat-card class="todo-card">
+  <mat-card class="todo-card" [attr.status]="todo.status.toString()">
       @if (this.todo.status === true) {
         <mat-card-header class="header-true">
       <mat-icon class = "card-status"><i class="fa-solid fa-check"></i></mat-icon>
