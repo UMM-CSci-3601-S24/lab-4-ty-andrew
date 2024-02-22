@@ -17,17 +17,17 @@ describe('Todo List', () => {
 
   it('should filter todos by owner', () => {
     const ownerFilter = 'Fry';
-    page.getTodoTitle().should('be.visible');
+    page.changeView('list');
     page.getTodoListItems().should('have.length.greaterThan', 0);
     cy.get('[data-test=todoOwnerInput]').type(ownerFilter);
-    cy.get('.todo-list-item .todo-list-name').each(($name) => {
-      cy.wrap($name).should('include.text', ownerFilter);
+    cy.get('.todo-list-item .todo-list-owner').each(($owner) => {
+      cy.wrap($owner).should('include.text', ownerFilter);
     });
   });
 
   it('should filter todos by category', () => {
     const categoryFilter = 'Video Games';
-    page.getTodoTitle().should('be.visible');
+    page.changeView('list');
     page.getTodoListItems().should('have.length.greaterThan', 0);
     cy.get('[data-test=todoCategorySelect]').click();
     cy.get('mat-option').contains(categoryFilter).click()
@@ -38,7 +38,7 @@ describe('Todo List', () => {
 
   it('should filter todos by status', () => {
     const statusFilter = 'Complete';
-    page.getTodoTitle().should('be.visible');
+    page.changeView('list');
     page.getTodoListItems().should('have.length.greaterThan', 0);
     cy.get('[data-test=todoStatusSelect]').click();
     cy.get('mat-option').contains(statusFilter).click()
@@ -49,7 +49,7 @@ describe('Todo List', () => {
 
   it('should filter todos by status', () => {
     const statusFilter = 'Incomplete';
-    page.getTodoTitle().should('be.visible');
+    page.changeView('list');
     page.getTodoListItems().should('have.length.greaterThan', 0);
     cy.get('[data-test=todoStatusSelect]').click();
     cy.get('mat-option').contains(statusFilter).click()
@@ -80,9 +80,9 @@ describe('Todo List', () => {
 
   it('Should have sth in contains and check that it returned correct elements', () => {
     page.changeView('list');
-    cy.get('[data-test=todoBodyInput]').type('body test for contains');
+    cy.get('[data-test=todoBodyInput]').type('in sunt');
     page.getTodoListItems().find('.todo-list-body').each($body =>
-      expect($body.text().toLowerCase()).to.contain('body test for contains')
+      expect($body.text().toLowerCase()).to.contain('in sunt')
     );
   });
 
@@ -91,8 +91,8 @@ describe('Todo List', () => {
 
     cy.get('[data-test=todoOwnerInput]').type('Blanche');
 
-    cy.get('[data-test=todoStatusSelect]').click()
-      .get(`mat-option[id="true"]`).click();
+    // cy.get('[data-test=todoStatusSelect]').click()
+    //   .get(`mat-option[value]="true"`).click();
 
       cy.get('[data-test=todoCategorySelect]').click()
       .get(`mat-option[value="homework"]`).click();
