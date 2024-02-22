@@ -18,8 +18,8 @@ describe('Add todo', () => {
     page.addTodoButton().should('be.disabled');
     page.selectMatSelectBoolean(page.getFormField('status'), 'Complete');
     page.addTodoButton().should('be.disabled');
-    page.selectMatSelectValue(page.getFormField('category'), 'Video Games');
-    page.addUserButton().should('be.disabled');
+    page.selectMatSelectValue(page.getFormField('category'), 'video games');
+    page.addTodoButton().should('be.disabled');
     page.getFormField('body').type('anythinghere');
     // all the required fields have valid input, then it should be enabled
     page.addTodoButton().should('be.enabled');
@@ -41,16 +41,17 @@ describe('Add todo', () => {
     cy.get('[data-test=ownerError]').should('not.exist');
 });
 
-it('Should show error messages for invalid body', () => {
+  it('Should show error messages for invalid body', () => {
 
-  cy.get('[data-test=bodyError]').should('not.exist');
+    cy.get('[data-test=bodyError]').should('not.exist');
 
-  page.getFormField('body').click().blur();
-  cy.get('[data-test=bodyError]').should('exist').and('be.visible');
+    page.getFormField('body').click().blur();
+    cy.get('[data-test=bodyError]').should('exist').and('be.visible');
 
-  page.getFormField('body').type('J'.repeat(600)).blur();
-  cy.get('[data-test=bodyError]').should('exist').and('be.visible');
-  page.getFormField('body').clear().type('Valid body').blur();
-  cy.get('[data-test=bodyError]').should('not.exits');
-});
+    const toolongbody = 'a'.repeat(501);
+    page.getFormField('body').clear().type(toolongbody).blur();
+    cy.get('[data-test=bodyError]').should('exist').and('be.visible');
+    page.getFormField('body').clear().type('Valid body').blur();
+    cy.get('[data-test=bodyError]').should('not.exist');
+  });
 })
