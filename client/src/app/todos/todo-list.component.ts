@@ -18,7 +18,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 
-
 @Component ({
   selector: 'app-todo-list-component',
   templateUrl: 'todo-list.component.html',
@@ -37,6 +36,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public todoCategory: string;
   public todoLimit: number;
   public todoSortBy: string;
+  public viewType: 'card' | 'list' = 'card';
 
 
 
@@ -56,6 +56,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   getTodosFromServer(): void {
 
     this.todoService.getTodos({
+      sortBy: this.todoSortBy,
       body: this.todoBody,
       category: this.todoCategory
     }).pipe(
@@ -82,7 +83,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   public updateFilter() {
     this.todos = this.todoService.filterTodos(
-      this.serverFilteredTodos, {owner: this.todoOwner, status: this.todoStatus, limit: this.todoLimit}
+      this.serverFilteredTodos, {owner: this.todoOwner, status: this.todoStatus, limit: this.todoLimit, body: this.todoBody}
     )
   }
 
@@ -95,4 +96,5 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
 }

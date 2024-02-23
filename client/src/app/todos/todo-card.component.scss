@@ -6,3 +6,21 @@
     font-size: 1rem;
   }
 }
+
+.header-true {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-status {
+  margin-left: auto;
+}
+
+
+.todo-card[status=true] {
+  background-color: green;
+}
+
+.todo-card[status=false] {
+  background-color: red;
+}

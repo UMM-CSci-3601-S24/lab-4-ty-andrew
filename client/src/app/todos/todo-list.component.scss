@@ -15,3 +15,55 @@
 .input-field {
   margin-bottom: 20px;
 }
+
+.add-todo-fab {
+  position: fixed;
+  bottom: 15px;
+  right: 30px;
+}
+
+.todo-cards-container {
+  width: 100%;
+  position: relative;
+}
+
+.todo-card {
+  margin-bottom: 10px;
+  flex: 1 1 280px;
+}
+
+.search-card {
+  margin-bottom: 10px;
+}
+
+.mat-radio-button {
+  margin: 0 12px;
+}
+
+
+.todo-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  max-width: 1250px;
+
+  cursor: pointer;
+}
+
+.todo-list-item[status=true] {
+  background-color: #a7f0a7; /* Green background for true (complete) status */
+}
+
+.todo-list-item[status=false] {
+  background-color: #f0a7a7; /* Red background for false (incomplete) status */
+}
+
+.todo-list-owner,
+.todo-list-status,
+.todo-list-body,
+.todo-list-category {
+  font-size: 16px; /* Adjust the font size as needed */
+}
